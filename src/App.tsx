@@ -18,7 +18,6 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<AboutPage />} />
 
-        {/* Band-aware routes */}
         <Route path="/g/:bandId" element={<BandEntryPage />} />
         <Route path="/g/:bandId/home" element={<BandHomePage />} />
         <Route path="/g/:bandId/edit" element={<BandEditPage />} />
@@ -28,7 +27,6 @@ const App = () => {
         <Route path="/g/:bandId/tracker" element={<TrackerPage />} />
         <Route path="/g/:bandId/postgame" element={<PostGamePage />} />
 
-        {/* Unbranded fallbacks */}
         <Route path="/breathe" element={<BreathingPage />} />
         <Route path="/coach" element={<ChatListPage />} />
         <Route path="/coach/:coachId" element={<ChatPage />} />
