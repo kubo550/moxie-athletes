@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /about
+
+# Personal band routes — never index, never crawl. These are private athlete data
+# tied to a unique bracelet ID and can leak identifying state.
+Disallow: /g/
+
+# Authenticated-feeling routes that don't need to be indexed
+Disallow: /coach/
+Disallow: /tracker
+Disallow: /breathe
+
+Sitemap: https://moxieathletes.com/sitemap.xml

@@ -1,0 +1,43 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { LandingPage } from '@/pages/LandingPage';
+import { BandEntryPage } from '@/pages/BandEntryPage';
+import { BandHomePage } from '@/pages/BandHomePage';
+import { BandEditPage } from '@/pages/BandEditPage';
+import { BreathingPage } from '@/pages/BreathingPage';
+import { ChatListPage } from '@/pages/ChatListPage';
+import { ChatPage } from '@/pages/ChatPage';
+import { TrackerPage } from '@/pages/TrackerPage';
+import { PostGamePage } from '@/pages/PostGamePage';
+import { AboutPage } from '@/pages/AboutPage';
+import { NotFoundPage } from '@/pages/NotFoundPage';
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+
+        {/* Band-aware routes */}
+        <Route path="/g/:bandId" element={<BandEntryPage />} />
+        <Route path="/g/:bandId/home" element={<BandHomePage />} />
+        <Route path="/g/:bandId/edit" element={<BandEditPage />} />
+        <Route path="/g/:bandId/breathe" element={<BreathingPage />} />
+        <Route path="/g/:bandId/coach" element={<ChatListPage />} />
+        <Route path="/g/:bandId/coach/:coachId" element={<ChatPage />} />
+        <Route path="/g/:bandId/tracker" element={<TrackerPage />} />
+        <Route path="/g/:bandId/postgame" element={<PostGamePage />} />
+
+        {/* Unbranded fallbacks */}
+        <Route path="/breathe" element={<BreathingPage />} />
+        <Route path="/coach" element={<ChatListPage />} />
+        <Route path="/coach/:coachId" element={<ChatPage />} />
+        <Route path="/tracker" element={<TrackerPage />} />
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
