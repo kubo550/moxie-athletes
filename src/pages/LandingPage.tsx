@@ -10,8 +10,8 @@ export const LandingPage = () => {
   });
   return (
     <AppShell hideNav>
-      <div className="min-h-screen flex flex-col items-center justify-between px-6 py-10 text-center">
-        <div className="pt-8">
+      <div className="h-[100dvh] flex flex-col items-center justify-between px-6 py-6 text-center">
+        <div className="pt-2">
           <span className="font-display text-3xl tracking-[0.3em] text-white/60">
             MOXIE
           </span>
@@ -25,13 +25,13 @@ export const LandingPage = () => {
             <br />
             SYSTEM
           </h1>
-          <p className="text-white/70 max-w-sm text-base mt-4">
+          <p className="text-white/70 max-w-sm text-base mt-2">
             Built for athletes who refuse to lose the mental game. Tap your band
             to lock in.
           </p>
         </div>
 
-        <div className="w-full flex flex-col items-center gap-3 pb-10">
+        <div className="w-full flex flex-col items-center gap-2 pb-2">
           <div className="text-white/40 text-xs uppercase tracking-widest">
             Tap your band to begin
           </div>

@@ -11,7 +11,7 @@ export const AppShell = ({ children, bandId, hideNav }: AppShellProps) => {
   const homeHref = bandId ? `/g/${bandId}/home` : '/';
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col relative overflow-x-hidden">
+    <div className="min-h-[100dvh] bg-black text-white flex flex-col relative overflow-x-hidden">
       <div className="fixed inset-0 -z-10 pointer-events-none bg-[radial-gradient(ellipse_at_top,_rgba(57,255,20,0.06),_transparent_55%),radial-gradient(ellipse_at_bottom,_rgba(255,255,255,0.04),_transparent_60%)]" />
 
       {!hideNav && (
@@ -35,7 +35,7 @@ export const AppShell = ({ children, bandId, hideNav }: AppShellProps) => {
         </header>
       )}
 
-      <main className="flex-1 w-full max-w-2xl mx-auto pb-24">{children}</main>
+      <main className="flex-1 w-full max-w-2xl mx-auto">{children}</main>
     </div>
   );
 };
