@@ -109,7 +109,7 @@ export const BandEntryPage = () => {
           onActivate={async (mantra, sport) => {
             const fingerprint = getDeviceFingerprint();
             await activateBand(bandId, mantra, fingerprint, sport);
-            setStatus({ kind: 'play', mantra, sponsor: null });
+            navigate(`/g/${bandId}/home`, { replace: true });
           }}
         />
       </AppShell>

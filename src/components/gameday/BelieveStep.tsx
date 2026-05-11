@@ -1,53 +1,54 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const PROMPTS = [
-  'See the moment.',
-  'Feel yourself making the play.',
-  "You've done this before.",
+const LINES = [
+  'I am ready.',
+  'I have done the work.',
+  'I trust myself.',
 ];
 
-const STEP_DURATION = 12000; // 12s
-const PER_PROMPT_MS = STEP_DURATION / PROMPTS.length;
+const STEP_DURATION = 8000; // 8s total
+const PER_LINE_MS = STEP_DURATION / LINES.length;
 
 type Props = {
   onComplete: () => void;
 };
 
-export const VisualizationStep = ({ onComplete }: Props) => {
+export const BelieveStep = ({ onComplete }: Props) => {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    if (idx >= PROMPTS.length) {
+    if (idx >= LINES.length) {
       onComplete();
       return;
     }
-    const t = setTimeout(() => setIdx((i) => i + 1), PER_PROMPT_MS);
+    const t = setTimeout(() => setIdx((i) => i + 1), PER_LINE_MS);
     return () => clearTimeout(t);
   }, [idx, onComplete]);
 
-  if (idx >= PROMPTS.length) return null;
+  if (idx >= LINES.length) return null;
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-[80vh] px-8 text-center">
       <div className="absolute top-12 text-xs uppercase tracking-[0.3em] text-accent-moxie/90">
-        Step 4 · Visualize
+        Step 3 · Believe
       </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={idx}
-          initial={{ opacity: 0, y: 12, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -12, filter: 'blur(8px)' }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-          className="font-display text-4xl sm:text-5xl text-white max-w-md leading-tight"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="font-display text-5xl sm:text-6xl text-white max-w-md leading-tight"
         >
-          {PROMPTS[idx]}
+          {LINES[idx]}
         </motion.div>
       </AnimatePresence>
 
       <div className="absolute bottom-24 flex gap-2">
-        {PROMPTS.map((_, i) => (
+        {LINES.map((_, i) => (
           <div
             key={i}
             className={`w-1.5 h-1.5 rounded-full transition-all ${

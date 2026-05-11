@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LockInStep } from './LockInStep';
+import { BreatheStep } from './BreatheStep';
+import { BelieveStep } from './BelieveStep';
 import { VisualizationStep } from './VisualizationStep';
-import { BreathingStep } from './BreathingStep';
+import { AttackStep } from './AttackStep';
 import { MantraStep } from './MantraStep';
+import { GameDayIntro } from './GameDayIntro';
 import type { Sponsor } from '@/infrastructure/athleteBands';
+import {
+  getFromLocalStorage,
+  setToLocalStorage,
+} from '@/utils/localStorage';
 
 type Props = {
   bandId: string;
@@ -13,13 +20,33 @@ type Props = {
   sponsor?: Sponsor | null;
 };
 
-const STEPS = ['lock-in', 'visualize', 'breathe', 'mantra'] as const;
+const STEPS = [
+  'lock-in',
+  'breathe',
+  'believe',
+  'visualize',
+  'attack',
+  'mantra',
+] as const;
 type Step = (typeof STEPS)[number];
+
+const INTRO_SEEN_KEY = 'moxie_seen_gameday_intro';
 
 export const GameDayMode = ({ bandId, mantra, sponsor }: Props) => {
   const navigate = useNavigate();
+  const [showIntro, setShowIntro] = useState(true);
   const [stepIdx, setStepIdx] = useState(0);
   const step: Step = STEPS[stepIdx];
+
+  useEffect(() => {
+    const seen = getFromLocalStorage<string>(INTRO_SEEN_KEY);
+    setShowIntro(!seen);
+  }, []);
+
+  const dismissIntro = () => {
+    setToLocalStorage(INTRO_SEEN_KEY, '1');
+    setShowIntro(false);
+  };
 
   const next = () => {
     if (stepIdx < STEPS.length - 1) {
@@ -28,6 +55,10 @@ export const GameDayMode = ({ bandId, mantra, sponsor }: Props) => {
       navigate(`/g/${bandId}/home`);
     }
   };
+
+  if (showIntro) {
+    return <GameDayIntro onLockIn={dismissIntro} />;
+  }
 
   return (
     <div className="fixed inset-0 bg-black z-50 flex flex-col">
@@ -42,8 +73,10 @@ export const GameDayMode = ({ bandId, mantra, sponsor }: Props) => {
             className="absolute inset-0"
           >
             {step === 'lock-in' && <LockInStep onComplete={next} />}
+            {step === 'breathe' && <BreatheStep onComplete={next} />}
+            {step === 'believe' && <BelieveStep onComplete={next} />}
             {step === 'visualize' && <VisualizationStep onComplete={next} />}
-            {step === 'breathe' && <BreathingStep onComplete={next} />}
+            {step === 'attack' && <AttackStep onComplete={next} />}
             {step === 'mantra' && (
               <MantraStep mantra={mantra} onComplete={next} />
             )}
@@ -60,16 +93,16 @@ export const GameDayMode = ({ bandId, mantra, sponsor }: Props) => {
         </div>
       )}
 
-      <div className="pb-6 pt-2 flex justify-center gap-2">
+      <div className="pb-6 pt-2 flex justify-center gap-1.5">
         {STEPS.map((s, i) => (
           <div
             key={s}
             className={`h-1 rounded-full transition-all ${
               i === stepIdx
-                ? 'w-8 bg-accent-moxie'
+                ? 'w-6 bg-accent-moxie'
                 : i < stepIdx
-                  ? 'w-4 bg-white/40'
-                  : 'w-4 bg-white/15'
+                  ? 'w-3 bg-white/40'
+                  : 'w-3 bg-white/15'
             }`}
           />
         ))}

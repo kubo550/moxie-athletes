@@ -8,6 +8,7 @@ import { ChatListPage } from '@/pages/ChatListPage';
 import { ChatPage } from '@/pages/ChatPage';
 import { TrackerPage } from '@/pages/TrackerPage';
 import { PostGamePage } from '@/pages/PostGamePage';
+import { WallpaperPage } from '@/pages/WallpaperPage';
 import { AboutPage } from '@/pages/AboutPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/g/:bandId/coach/:coachId" element={<ChatPage />} />
         <Route path="/g/:bandId/tracker" element={<TrackerPage />} />
         <Route path="/g/:bandId/postgame" element={<PostGamePage />} />
+        <Route path="/g/:bandId/wallpaper" element={<WallpaperPage />} />
 
         <Route path="/breathe" element={<BreathingPage />} />
         <Route path="/coach" element={<ChatListPage />} />

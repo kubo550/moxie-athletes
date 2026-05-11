@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 import { MentalRepsCarousel } from '@/components/MentalRepsCarousel';
+import { DailyQuoteCard } from '@/components/DailyQuoteCard';
+import { WallpaperOfTheDayCard } from '@/components/WallpaperOfTheDayCard';
 import {
   type AthleteBand,
   getBand,
@@ -109,7 +111,11 @@ export const BandHomePage = () => {
           </div>
         </motion.div>
 
+        <DailyQuoteCard />
+
         <MentalRepsCarousel />
+
+        <WallpaperOfTheDayCard bandId={bandId} />
 
         <div className="grid grid-cols-2 gap-3">
           <HomeCard

@@ -1,15 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const CUES = [
-  'Lock In.',
-  'Eyes up.',
-  'Slow it down.',
-  'You belong here.',
-  'This is your moment.',
-];
-
-const LOCK_IN_DURATION = 60;
+const CUES = ['Lock in.', 'Eyes up.', 'Slow it down.'];
+const LOCK_IN_DURATION = 10;
 
 type Props = {
   onComplete: () => void;
@@ -37,7 +30,7 @@ export const LockInStep = ({ onComplete }: Props) => {
         clearInterval(tick);
         onComplete();
       }
-    }, 250);
+    }, 200);
     return () => clearInterval(tick);
   }, [onComplete]);
 
@@ -48,27 +41,30 @@ export const LockInStep = ({ onComplete }: Props) => {
 
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute w-[420px] h-[420px] rounded-full bg-accent-moxie/10 blur-2xl"
       />
       <motion.div
         animate={{ scale: [1, 1.05, 1] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute w-56 h-56 rounded-full border-2 border-accent-moxie/70"
       />
       <motion.div
         animate={{ scale: [0.9, 1.1, 0.9] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute w-32 h-32 rounded-full bg-accent-moxie/30"
       />
 
-      <div className="relative z-10 flex flex-col items-center gap-6">
+      <div className="relative z-10 flex flex-col items-center gap-5">
+        <div className="text-accent-moxie text-xs uppercase tracking-[0.3em]">
+          Step 1 · Lock In
+        </div>
         <motion.div
           key={cueIdx}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="font-display text-5xl text-white tracking-wide"
         >
           {CUES[cueIdx]}
