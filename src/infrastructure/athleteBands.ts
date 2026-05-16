@@ -29,6 +29,14 @@ export type Sponsor = {
   message?: string;
 };
 
+// One row per team the athlete has joined. Sorted by joinedAt desc when used
+// as the "primary" team (most recently joined wins by default).
+export type TeamMembership = {
+  teamCode: string;
+  nickname: string | null;
+  joinedAt: Timestamp;
+};
+
 export type AthleteBand = {
   mantra: string | null;
   sport: string | null;
@@ -41,6 +49,7 @@ export type AthleteBand = {
   streakCount: number;
   streakLastDate: string | null;
   sponsor: Sponsor | null;
+  teamMemberships: TeamMembership[];
 };
 
 const COLLECTION = 'athleteBands';
@@ -71,6 +80,7 @@ export const getBand = async (bandId: string): Promise<AthleteBand | null> => {
     streakCount: data.streakCount ?? 0,
     streakLastDate: data.streakLastDate ?? null,
     sponsor: data.sponsor ?? null,
+    teamMemberships: data.teamMemberships ?? [],
   };
 };
 
@@ -92,6 +102,7 @@ export const activateBand = async (
     streakCount: 1,
     streakLastDate: todayKey(),
     sponsor: null,
+    teamMemberships: [],
   });
 };
 
@@ -151,3 +162,38 @@ export const appendJournalEntry = async (
     journalLog: arrayUnion(entry),
   });
 };
+
+// Idempotent: joining the same team twice is a no-op. Otherwise appends.
+export const joinTeam = async (
+  bandId: string,
+  teamCode: string,
+  nickname: string | null
+) => {
+  const band = await getBand(bandId);
+  if (!band) throw new Error('Band not found');
+  if (band.teamMemberships.some((m) => m.teamCode === teamCode)) return false;
+  const membership: TeamMembership = {
+    teamCode,
+    nickname: nickname && nickname.trim() ? nickname.trim() : null,
+    joinedAt: Timestamp.now(),
+  };
+  await updateDoc(bandRef(bandId), {
+    teamMemberships: [...band.teamMemberships, membership],
+  });
+  return true;
+};
+
+export const leaveTeam = async (bandId: string, teamCode: string) => {
+  const band = await getBand(bandId);
+  if (!band) return;
+  const next = band.teamMemberships.filter((m) => m.teamCode !== teamCode);
+  await updateDoc(bandRef(bandId), { teamMemberships: next });
+};
+
+// Sorted most-recent-joined first. UI uses [0] as the visual "primary" by default.
+export const sortMembershipsByRecency = (memberships: TeamMembership[]) =>
+  [...memberships].sort((a, b) => {
+    const ta = a.joinedAt?.toMillis?.() ?? 0;
+    const tb = b.joinedAt?.toMillis?.() ?? 0;
+    return tb - ta;
+  });

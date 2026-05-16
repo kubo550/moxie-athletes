@@ -14,9 +14,11 @@ import { AppShell } from '@/components/AppShell';
 import { MentalRepsCarousel } from '@/components/MentalRepsCarousel';
 import { DailyQuoteCard } from '@/components/DailyQuoteCard';
 import { WallpaperOfTheDayCard } from '@/components/WallpaperOfTheDayCard';
+import { TeamFeed } from '@/components/TeamFeed';
 import {
   type AthleteBand,
   getBand,
+  sortMembershipsByRecency,
 } from '@/infrastructure/athleteBands';
 import { getDeviceFingerprint } from '@/utils/deviceFingerprint';
 import { getSport } from '@/config/sports';
@@ -40,9 +42,10 @@ const formatStreak = (band: AthleteBand): { count: number; live: boolean } => {
 
 export const BandHomePage = () => {
   const { bandId } = useParams<{ bandId: string }>();
-  usePageMeta({ title: 'Your Band — Moxie Athletes', noindex: true });
+  usePageMeta({ title: 'Your Band · Moxie Athletes', noindex: true });
   const [band, setBand] = useState<AthleteBand | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeTeamCode, setActiveTeamCode] = useState<string | null>(null);
   const isOwner = (() => {
     if (!band?.deviceFingerprint) return true;
     return band.deviceFingerprint === getDeviceFingerprint();
@@ -52,7 +55,12 @@ export const BandHomePage = () => {
     if (!bandId) return;
     (async () => {
       try {
-        setBand(await getBand(bandId));
+        const b = await getBand(bandId);
+        setBand(b);
+        if (b && b.teamMemberships.length > 0) {
+          const sorted = sortMembershipsByRecency(b.teamMemberships);
+          setActiveTeamCode(sorted[0].teamCode);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -64,6 +72,9 @@ export const BandHomePage = () => {
   if (!bandId) return null;
   const streak = band ? formatStreak(band) : { count: 0, live: false };
   const sport = getSport(band?.sport ?? null);
+  const memberships = band ? sortMembershipsByRecency(band.teamMemberships) : [];
+  const activeMembership =
+    memberships.find((m) => m.teamCode === activeTeamCode) ?? memberships[0];
 
   return (
     <AppShell bandId={bandId}>
@@ -113,7 +124,48 @@ export const BandHomePage = () => {
 
         <DailyQuoteCard />
 
-        <MentalRepsCarousel />
+        <MentalRepsCarousel bandId={bandId} />
+
+        {memberships.length > 0 && activeMembership && (
+          <div>
+            {memberships.length > 1 && (
+              <div className="flex gap-2 mb-3 overflow-x-auto scrollbar-hide -mx-1 px-1">
+                {memberships.map((m) => {
+                  const isActive = m.teamCode === activeMembership.teamCode;
+                  return (
+                    <button
+                      key={m.teamCode}
+                      onClick={() => setActiveTeamCode(m.teamCode)}
+                      className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs uppercase tracking-widest border transition ${
+                        isActive
+                          ? 'bg-accent-moxie text-black border-accent-moxie'
+                          : 'bg-white/5 text-white/70 border-white/15 hover:border-white/30'
+                      }`}
+                    >
+                      {m.teamCode}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+            <TeamFeed
+              key={activeMembership.teamCode}
+              teamCode={activeMembership.teamCode}
+            />
+          </div>
+        )}
+
+        {memberships.length === 0 && (
+          <div className="bg-white/5 border border-dashed border-white/15 rounded-xl p-5 text-center">
+            <div className="font-display text-lg tracking-wider text-white mb-1">
+              JOIN A TEAM
+            </div>
+            <p className="text-white/55 text-xs mb-3 leading-relaxed">
+              Got a coach link? Tap it to join your roster. Your taps and reps
+              will fuel your team's culture.
+            </p>
+          </div>
+        )}
 
         <WallpaperOfTheDayCard bandId={bandId} />
 

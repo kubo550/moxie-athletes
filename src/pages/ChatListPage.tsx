@@ -9,9 +9,9 @@ export const ChatListPage = () => {
   const base = bandId ? `/g/${bandId}/coach` : '/coach';
   const home = bandId ? `/g/${bandId}/home` : '/';
   usePageMeta({
-    title: 'AI Coach — Moxie Athletes',
+    title: 'AI Coach · Moxie Athletes',
     description:
-      'Anonymous, private AI coaching for athletes — pre-game nerves, slumps, mistakes, pressure, and injury mindset.',
+      'Anonymous, private AI coaching for athletes. Pre-game nerves, slumps, mistakes, pressure, and injury mindset.',
     noindex: !!bandId,
   });
 

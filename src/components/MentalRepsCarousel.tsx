@@ -6,6 +6,8 @@ import {
   getFromLocalStorage,
   setToLocalStorage,
 } from '@/utils/localStorage';
+import { getBand } from '@/infrastructure/athleteBands';
+import { emitMentalRep } from '@/infrastructure/teamEmit';
 
 const COMPLETED_KEY = 'moxie_completed_reps';
 
@@ -14,7 +16,11 @@ type CompletedState = {
   ids: string[];
 };
 
-export const MentalRepsCarousel = () => {
+type Props = {
+  bandId?: string;
+};
+
+export const MentalRepsCarousel = ({ bandId }: Props) => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
 
@@ -33,13 +39,20 @@ export const MentalRepsCarousel = () => {
 
   const toggle = (id: string) => {
     const next = new Set(completed);
-    if (next.has(id)) next.delete(id);
+    const wasCompleted = next.has(id);
+    if (wasCompleted) next.delete(id);
     else next.add(id);
     setCompleted(next);
     setToLocalStorage(COMPLETED_KEY, {
       date: new Date().toISOString().slice(0, 10),
       ids: Array.from(next),
     });
+    // Only emit on completion (toggle ON), not on uncheck.
+    if (!wasCompleted && bandId) {
+      getBand(bandId)
+        .then((band) => band && emitMentalRep(band.teamMemberships))
+        .catch((err) => console.warn('team-emit rep failed', err));
+    }
   };
 
   if (challenges.length === 0) return null;

@@ -10,8 +10,8 @@ export const ChatPage = () => {
   const backHref = bandId ? `/g/${bandId}/coach` : '/coach';
   usePageMeta({
     title: coach
-      ? `${coach.name} — Moxie Coach`
-      : 'AI Coach — Moxie Athletes',
+      ? `${coach.name} · Moxie Coach`
+      : 'AI Coach · Moxie Athletes',
     noindex: true,
   });
 

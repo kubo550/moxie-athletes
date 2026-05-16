@@ -18,6 +18,7 @@ type Props = {
   bandId: string;
   mantra: string;
   sponsor?: Sponsor | null;
+  onComplete?: () => void;
 };
 
 const STEPS = [
@@ -32,7 +33,7 @@ type Step = (typeof STEPS)[number];
 
 const INTRO_SEEN_KEY = 'moxie_seen_gameday_intro';
 
-export const GameDayMode = ({ bandId, mantra, sponsor }: Props) => {
+export const GameDayMode = ({ bandId, mantra, sponsor, onComplete }: Props) => {
   const navigate = useNavigate();
   const [showIntro, setShowIntro] = useState(true);
   const [stepIdx, setStepIdx] = useState(0);
@@ -52,6 +53,7 @@ export const GameDayMode = ({ bandId, mantra, sponsor }: Props) => {
     if (stepIdx < STEPS.length - 1) {
       setStepIdx((i) => i + 1);
     } else {
+      onComplete?.();
       navigate(`/g/${bandId}/home`);
     }
   };

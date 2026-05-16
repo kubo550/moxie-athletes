@@ -45,9 +45,9 @@ export const BreathingPage = () => {
   const [active, setActive] = useState<Preset | null>(null);
   const home = bandId ? `/g/${bandId}/home` : '/';
   usePageMeta({
-    title: 'Performance Breathing — Moxie Athletes',
+    title: 'Performance Breathing · Moxie Athletes',
     description:
-      'Three breathing presets built for athletes — reset between plays, calm pre-game anxiety, halftime reset.',
+      'Three breathing presets built for athletes: reset between plays, calm pre-game anxiety, halftime reset.',
     noindex: !!bandId,
   });
 

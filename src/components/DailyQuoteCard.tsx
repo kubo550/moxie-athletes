@@ -16,7 +16,7 @@ export const DailyQuoteCard = () => {
           “{quote.quote}”
         </p>
         <div className="mt-3 text-xs text-white/55">
-          — {quote.author}
+          · {quote.author}
           {quote.sport && (
             <span className="text-white/40"> · {quote.sport}</span>
           )}

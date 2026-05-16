@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { AppShell } from '@/components/AppShell';
 import {
   appendJournalEntry,
+  getBand,
   type JournalEntry,
 } from '@/infrastructure/athleteBands';
+import { emitPostGame } from '@/infrastructure/teamEmit';
 import { usePageMeta } from '@/utils/usePageMeta';
 
 const PROMPTS = [
@@ -32,7 +34,7 @@ const PROMPTS = [
 export const PostGamePage = () => {
   const { bandId } = useParams<{ bandId: string }>();
   const navigate = useNavigate();
-  usePageMeta({ title: 'Post-Game Reflection — Moxie Athletes', noindex: true });
+  usePageMeta({ title: 'Post-Game Reflection · Moxie Athletes', noindex: true });
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({
     bestMoment: '',
@@ -79,6 +81,10 @@ export const PostGamePage = () => {
     };
     try {
       await appendJournalEntry(bandId, entry);
+      // Best-effort team emission; never block the navigation.
+      getBand(bandId)
+        .then((band) => band && emitPostGame(band))
+        .catch((err) => console.warn('team-emit postgame failed', err));
       navigate(`/g/${bandId}/home`);
     } catch (err) {
       console.error(err);

@@ -40,7 +40,7 @@ export const CHALLENGES: Challenge[] = [
     id: 'lock-in-warmup',
     title: 'First 5 Lock-In',
     description:
-      'Lock in for the first 5 minutes of warm-up. No phone, no jokes — just you and the work.',
+      'Lock in for the first 5 minutes of warm-up. No phone, no jokes. Just you and the work.',
     coachTypes: [QuoteType.focus, QuoteType.discipline],
   },
   {
@@ -103,7 +103,7 @@ export const CHALLENGES: Challenge[] = [
     id: 'thank-coach',
     title: 'Thank Your Coach',
     description:
-      'Tell your coach one specific thing you appreciate today. Not generic — be real.',
+      'Tell your coach one specific thing you appreciate today. Not generic. Be real.',
     coachTypes: [QuoteType.athlete_confidence],
   },
   {
@@ -145,7 +145,7 @@ export const CHALLENGES: Challenge[] = [
     id: 'eye-contact-coach',
     title: 'Eye Contact When Coached',
     description:
-      'When your coach gives feedback today — eyes up, head up, listen. No nodding to the ground.',
+      'When your coach gives feedback today, eyes up, head up, listen. No nodding to the ground.',
     coachTypes: [QuoteType.discipline, QuoteType.focus],
   },
 ];

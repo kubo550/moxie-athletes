@@ -8,7 +8,7 @@ export type Wallpaper = {
   };
 };
 
-// 30 wallpapers — one per day for the first month.
+// 30 wallpapers, one per day for the first month.
 // Generative SVG posters. Real artwork from Jake will swap in here later.
 export const WALLPAPERS: Wallpaper[] = [
   { id: 'w-01', mantra: 'I AM THE STORM', palette: { bg1: '#0a0a0a', bg2: '#000000', accent: '#39ff14' } },

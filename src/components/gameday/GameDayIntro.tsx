@@ -38,7 +38,7 @@ export const GameDayIntro = ({ onLockIn }: Props) => {
             Flipping the switch.
           </p>
           <p className="text-white/65">
-            This is how elite athletes lock in — cinematic, focused, calm under
+            This is how elite athletes lock in: cinematic, focused, calm under
             pressure.
           </p>
         </motion.div>

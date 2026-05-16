@@ -9,7 +9,7 @@ export const ATHLETE_QUOTES: AthleteQuote[] = [
   {
     id: 'kobe-1',
     quote:
-      'Everything negative — pressure, challenges — is all an opportunity for me to rise.',
+      'Everything negative, pressure, challenges, is all an opportunity for me to rise.',
     author: 'Kobe Bryant',
     sport: 'Basketball',
   },

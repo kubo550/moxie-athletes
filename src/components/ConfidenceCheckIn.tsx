@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   appendConfidenceEntry,
+  getBand,
   type ConfidenceEntry,
 } from '@/infrastructure/athleteBands';
+import { emitConfidence } from '@/infrastructure/teamEmit';
 
 type Props = {
   bandId: string;
@@ -89,6 +91,9 @@ export const ConfidenceCheckIn = ({
     };
     try {
       await appendConfidenceEntry(bandId, entry);
+      getBand(bandId)
+        .then((band) => band && emitConfidence(band, entry.confidence))
+        .catch((err) => console.warn('team-emit confidence failed', err));
       onSubmitted(entry);
     } catch (err) {
       console.error(err);

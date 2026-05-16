@@ -4,9 +4,9 @@ import { usePageMeta } from '@/utils/usePageMeta';
 
 export const AboutPage = () => {
   usePageMeta({
-    title: 'About — Moxie Athletes',
+    title: 'About · Moxie Athletes',
     description:
-      'Most athletes train their bodies for hours. They train their minds for zero. Moxie Athletes is the mental performance system fixing that — built for middle school, high school, and college athletes.',
+      'Most athletes train their bodies for hours. They train their minds for zero. Moxie Athletes is the mental performance system fixing that. Built for middle school, high school, and college athletes.',
   });
   return (
     <AppShell>
@@ -29,7 +29,7 @@ export const AboutPage = () => {
           </p>
           <p>
             One tap of your band before competition runs you through a 60
-            second ritual built on what elite performers actually do — lock in,
+            second ritual built on what elite performers actually do: lock in,
             visualize, breathe, and remind yourself who you are.
           </p>
           <p>

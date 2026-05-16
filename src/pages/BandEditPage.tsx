@@ -19,7 +19,7 @@ export const BandEditPage = () => {
   const [draft, setDraft] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  usePageMeta({ title: 'Edit Mantra — Moxie Athletes', noindex: true });
+  usePageMeta({ title: 'Edit Mantra · Moxie Athletes', noindex: true });
 
   useEffect(() => {
     if (!bandId) return;
@@ -106,7 +106,7 @@ export const BandEditPage = () => {
                 Mantra
               </div>
               <div className="text-white text-lg italic">
-                "{state.mantra ?? '—'}"
+                "{state.mantra ?? '–'}"
               </div>
             </div>
             <div className="text-white/60 text-sm leading-relaxed">

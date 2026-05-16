@@ -5,28 +5,33 @@ import { ActivateBand } from '@/components/gameday/ActivateBand';
 import { GameDayMode } from '@/components/gameday/GameDayMode';
 import {
   type AthleteBand,
-  type Sponsor,
   activateBand,
   getBand,
   recordTap,
 } from '@/infrastructure/athleteBands';
+import {
+  emitGameDayComplete,
+  emitStreakIfMilestone,
+} from '@/infrastructure/teamEmit';
 import { getDeviceFingerprint } from '@/utils/deviceFingerprint';
+import { setLastBandId } from '@/utils/lastBand';
 import { usePageMeta } from '@/utils/usePageMeta';
 
 type Status =
   | { kind: 'loading' }
   | { kind: 'activate' }
-  | { kind: 'play'; mantra: string; sponsor: Sponsor | null }
+  | { kind: 'play'; band: AthleteBand }
   | { kind: 'error'; message: string };
 
 export const BandEntryPage = () => {
   const { bandId } = useParams<{ bandId: string }>();
   const navigate = useNavigate();
   const [status, setStatus] = useState<Status>({ kind: 'loading' });
-  usePageMeta({ title: 'Game-Day Mode — Moxie Athletes', noindex: true });
+  usePageMeta({ title: 'Game-Day Mode · Moxie Athletes', noindex: true });
 
   useEffect(() => {
     if (!bandId) return;
+    setLastBandId(bandId);
     let cancelled = false;
 
     const run = async () => {
@@ -38,19 +43,23 @@ export const BandEntryPage = () => {
           return;
         }
 
-        await recordTap(bandId, {
+        const next = await recordTap(bandId, {
           streakCount: band.streakCount,
           streakLastDate: band.streakLastDate,
         }).catch((err) => {
           // Tap-counting is best effort; never block the ritual.
           console.warn('recordTap failed', err);
+          return null;
         });
+
+        if (next && next.streakCount !== band.streakCount) {
+          emitStreakIfMilestone(band, next.streakCount);
+        }
 
         if (!cancelled)
           setStatus({
             kind: 'play',
-            mantra: band.mantra,
-            sponsor: band.sponsor,
+            band,
           });
       } catch (err) {
         console.error(err);
@@ -119,8 +128,9 @@ export const BandEntryPage = () => {
   return (
     <GameDayMode
       bandId={bandId}
-      mantra={status.mantra}
-      sponsor={status.sponsor}
+      mantra={status.band.mantra ?? ''}
+      sponsor={status.band.sponsor}
+      onComplete={() => emitGameDayComplete(status.band)}
     />
   );
 };

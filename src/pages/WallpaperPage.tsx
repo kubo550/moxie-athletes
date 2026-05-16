@@ -45,7 +45,7 @@ export const WallpaperPage = () => {
   const [busy, setBusy] = useState(false);
 
   usePageMeta({
-    title: 'Wallpaper of the Day — Moxie Athletes',
+    title: 'Wallpaper of the Day · Moxie Athletes',
     noindex: true,
   });
 

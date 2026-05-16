@@ -22,9 +22,9 @@ export const TrackerPage = () => {
   const [state, setState] = useState<State>({ kind: 'loading' });
   const [range, setRange] = useState<7 | 30>(7);
   usePageMeta({
-    title: 'Confidence Tracker — Moxie Athletes',
+    title: 'Confidence Tracker · Moxie Athletes',
     description:
-      'Daily confidence, focus, and energy check-ins — track how your mental game gets stronger over time.',
+      'Daily confidence, focus, and energy check-ins. Track how your mental game gets stronger over time.',
     noindex: true,
   });
 

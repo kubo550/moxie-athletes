@@ -3,7 +3,7 @@ import { AppShell } from '@/components/AppShell';
 import { usePageMeta } from '@/utils/usePageMeta';
 
 export const NotFoundPage = () => {
-  usePageMeta({ title: 'Not Found — Moxie Athletes', noindex: true });
+  usePageMeta({ title: 'Not Found · Moxie Athletes', noindex: true });
   return (
     <AppShell>
       <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6">

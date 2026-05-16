@@ -24,7 +24,7 @@ export const ActivateBand = ({ onActivate }: Props) => {
       return;
     }
     if (trimmed.length > 100) {
-      setError('Keep it short — under 100 characters.');
+      setError('Keep it short. Under 100 characters.');
       return;
     }
     setError(null);

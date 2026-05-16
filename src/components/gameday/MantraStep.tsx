@@ -8,7 +8,7 @@ type Props = {
   onComplete: () => void;
 };
 
-// "Own The Moment" — final step. Holds the athlete's mantra full-screen.
+// "Own The Moment". Final step. Holds the athlete's mantra full-screen.
 // Tap-to-begin is locked for the first ~4s so it can't be dismissed by mistake.
 export const MantraStep = ({ mantra, onComplete }: Props) => {
   const [ready, setReady] = useState(false);
